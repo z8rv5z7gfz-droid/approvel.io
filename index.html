@@ -899,6 +899,104 @@ footer {
   animation: fadeUp 0.4s ease;
 }
 
+/* ── CELEBRATION OVERLAY ── */
+#celebrate-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,22,18,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  animation: overlayIn 0.3s ease both;
+}
+
+#celebrate-overlay.show { display: flex; }
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.celebrate-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 24px 60px rgba(26,22,18,0.2);
+  animation: cardPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  position: relative;
+}
+
+@keyframes cardPop {
+  from { opacity: 0; transform: scale(0.8) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.celebrate-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+  animation: iconPop 0.5s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes iconPop {
+  from { transform: scale(0.2) rotate(-20deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.celebrate-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.9rem;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  animation: fadeUp 0.4s 0.25s ease both;
+}
+
+.celebrate-title em { font-style: italic; color: var(--accent); }
+
+.celebrate-sub {
+  font-size: 0.88rem;
+  color: var(--mid);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.4s 0.35s ease both;
+}
+
+.celebrate-bar {
+  height: 3px;
+  background: var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+
+.celebrate-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 2.2s linear;
+}
+
+.celebrate-redirect-text {
+  font-size: 0.72rem;
+  color: var(--mid);
+  font-family: 'Geist Mono', monospace;
+  animation: fadeUp 0.4s 0.4s ease both;
+}
+
+#celebrate-canvas {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   nav { padding: 1rem 1.5rem; }
@@ -946,7 +1044,7 @@ footer {
     Share a link. Your client annotates directly on the design and signs off in one click — no account needed, no back-and-forth, no excuses.
   </p>
 
-  <form class="waitlist-form" id="hero-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="joinWaitlist(event, 'hero')">
+  <form class="waitlist-form" id="hero-form" action="https://formspree.io/f/xeerrvqz" method="POST" onsubmit="joinWaitlist(event, 'hero')">
     <input type="email" name="email" placeholder="your@agency.com" id="hero-email" required />
     <button class="btn-main" type="submit">Get early access →</button>
   </form>
@@ -1275,7 +1373,7 @@ footer {
     <h2 class="section-title">Stop losing hours<br>to approval chaos.</h2>
     <p class="section-sub">Join the waitlist and be first to access Approvel when we open the doors. Free during beta — no credit card needed.</p>
 
-    <form class="waitlist-form" id="wl-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="joinWaitlist(event, 'wl')">
+    <form class="waitlist-form" id="wl-form" action="https://formspree.io/f/xeerrvqz" method="POST" onsubmit="joinWaitlist(event, 'wl')">
       <input type="email" name="email" placeholder="your@agency.com" id="wl-email" required />
       <button class="btn-main" type="submit">Join the waitlist →</button>
     </form>
@@ -1308,12 +1406,12 @@ footer {
     <a href="#">Pricing</a>
     <a href="#">Privacy</a>
     <a href="#">Terms</a>
-    <a href="mailto:hello@approvel.io">Contact</a>
+    <a href="/cdn-cgi/l/email-protection#3d55585151527d5c4d4d4f524b5851135452">Contact</a>
   </div>
   <div class="footer-copy">© 2026 Approvel · approvel.io</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Scroll reveal — sections visible by default, animate in on scroll
 const reveals = document.querySelectorAll('.reveal');
 
@@ -1350,19 +1448,83 @@ function joinWaitlist(e, id) {
     return;
   }
 
+  const data = new FormData();
+  data.append('email', emailInput.value);
+
   fetch(form.action, {
     method: 'POST',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: emailInput.value })
+    headers: { 'Accept': 'application/json' },
+    body: data
   })
   .then(res => {
-    form.style.display = 'none';
-    success.style.display = 'flex';
+    if (res.ok) {
+      showCelebration();
+    } else {
+      emailInput.style.borderColor = '#E11D48';
+      emailInput.placeholder = 'Something went wrong — try again';
+      setTimeout(() => { emailInput.style.borderColor = ''; emailInput.placeholder = 'Enter your email'; }, 3000);
+    }
   })
   .catch(() => {
-    form.style.display = 'none';
-    success.style.display = 'flex';
+    showCelebration();
   });
+}
+
+// Celebration animation + redirect
+function showCelebration() {
+  const overlay = document.getElementById('celebrate-overlay');
+  overlay.classList.add('show');
+
+  // Kick off confetti inside the card
+  const canvas = document.getElementById('celebrate-canvas');
+  const ctx = canvas.getContext('2d');
+  const card = canvas.parentElement;
+  canvas.width = card.offsetWidth;
+  canvas.height = card.offsetHeight;
+
+  const COLORS = ['#D4521A','#1A7A4A','#C27B00','#2563EB','#E8784A'];
+  const pieces = [];
+
+  function rnd(a,b){ return a + Math.random()*(b-a); }
+  for(let i=0;i<90;i++){
+    pieces.push({
+      x: rnd(0, canvas.width), y: rnd(-60, -5),
+      w: rnd(5,12), h: rnd(3,8),
+      color: COLORS[Math.floor(Math.random()*COLORS.length)],
+      angle: rnd(0, Math.PI*2), spin: rnd(-0.1,0.1),
+      vx: rnd(-1.2,1.2), vy: rnd(2,4.5),
+      gravity: rnd(0.05,0.1), opacity: 1,
+      shape: Math.random()>0.5?'rect':'circle'
+    });
+  }
+
+  function drawPiece(p){
+    ctx.save(); ctx.globalAlpha=p.opacity;
+    ctx.translate(p.x,p.y); ctx.rotate(p.angle);
+    ctx.fillStyle=p.color;
+    if(p.shape==='circle'){ ctx.beginPath(); ctx.arc(0,0,p.w/2,0,Math.PI*2); ctx.fill(); }
+    else { ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); }
+    ctx.restore();
+  }
+
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let i=pieces.length-1;i>=0;i--){
+      const p=pieces[i];
+      p.x+=p.vx; p.y+=p.vy; p.vy+=p.gravity; p.angle+=p.spin;
+      if(p.y>canvas.height*0.75) p.opacity-=0.025;
+      if(p.opacity<=0){pieces.splice(i,1);continue;}
+      drawPiece(p);
+    }
+    if(pieces.length>0) requestAnimationFrame(tick);
+  }
+  tick();
+
+  // Progress bar
+  setTimeout(() => { document.getElementById('celebrate-fill').style.width='100%'; }, 80);
+
+  // Redirect
+  setTimeout(() => { window.location.href='thankyou.html'; }, 2400);
 }
 
 // Smooth nav highlight
@@ -1370,7 +1532,4 @@ const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
   navLinks.forEach(link => {
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) {
-      const top = target.offsetTop - 100;
-      const bottom = to
+    c
