@@ -1044,10 +1044,8 @@ footer {
     Share a link. Your client annotates directly on the design and signs off in one click — no account needed, no back-and-forth, no excuses.
   </p>
 
-  <form class="waitlist-form" id="hero-form" action="https://formspree.io/f/xeerrvqz" method="POST" onsubmit="joinWaitlist(event, 'hero')">
+  <form class="waitlist-form" id="hero-form" onsubmit="return joinWaitlist(event, 'hero')">
     <input type="email" name="email" placeholder="your@agency.com" id="hero-email" />
-    <input type="hidden" name="_next" value="false" />
-    <input type="hidden" name="_subject" value="New Approvel waitlist signup!" />
     <button class="btn-main" type="submit">Get early access →</button>
   </form>
   <div class="success-msg" id="hero-success">🎉 You're on the list! We'll be in touch soon.</div>
@@ -1375,10 +1373,8 @@ footer {
     <h2 class="section-title">Stop losing hours<br>to approval chaos.</h2>
     <p class="section-sub">Join the waitlist and be first to access Approvel when we open the doors. Free during beta — no credit card needed.</p>
 
-    <form class="waitlist-form" id="wl-form" action="https://formspree.io/f/xeerrvqz" method="POST" onsubmit="joinWaitlist(event, 'wl')">
+    <form class="waitlist-form" id="wl-form" onsubmit="return joinWaitlist(event, 'wl')">
       <input type="email" name="email" placeholder="your@agency.com" id="wl-email" />
-      <input type="hidden" name="_next" value="false" />
-      <input type="hidden" name="_subject" value="New Approvel waitlist signup!" />
       <button class="btn-main" type="submit">Join the waitlist →</button>
     </form>
     <div class="success-msg" id="wl-success" style="justify-content:center;">🎉 You're on the list! We'll be in touch soon.</div>
