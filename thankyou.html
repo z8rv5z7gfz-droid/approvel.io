@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Approvel — You're on the list!</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Geist', sans-serif; background: #FAF7F2; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
+canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.card { position: relative; z-index: 1; background: white; border: 1px solid #E0D8CE; border-radius: 20px; padding: 3rem 3.5rem; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(26,22,18,0.08); animation: cardIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275) both; }
+@keyframes cardIn { from { opacity:0; transform:scale(0.88) translateY(24px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.logo { font-family: 'Instrument Serif', serif; font-size: 1.2rem; color: #1A1612; display: block; margin-bottom: 2rem; }
+.logo span { color: #D4521A; }
+.icon { font-size: 3.5rem; display: block; margin-bottom: 1.2rem; animation: iconPop 0.5s 0.3s cubic-bezier(0.175,0.885,0.32,1.275) both; }
+@keyframes iconPop { from { opacity:0; transform:scale(0.2) rotate(-20deg); } to { opacity:1; transform:scale(1) rotate(0); } }
+.badge { display: inline-flex; align-items: center; gap: 0.4rem; background: #E0F2E9; border: 1px solid rgba(26,122,74,0.2); border-radius: 20px; padding: 0.3rem 0.85rem; font-family: 'Geist Mono', monospace; font-size: 0.72rem; color: #1A7A4A; font-weight: 500; margin-bottom: 1.2rem; animation: fadeUp 0.4s 0.4s ease both; }
+.badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #1A7A4A; animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.7); } }
+h1 { font-family: 'Instrument Serif', serif; font-size: 2.4rem; font-weight: 400; color: #1A1612; line-height: 1.1; margin-bottom: 0.7rem; animation: fadeUp 0.4s 0.25s ease both; }
+h1 em { font-style: italic; color: #D4521A; }
+.sub { font-size: 0.9rem; color: #8C8070; line-height: 1.7; margin-bottom: 2rem; animation: fadeUp 0.4s 0.35s ease both; }
+.steps { background: #FAF7F2; border-radius: 12px; padding: 1.2rem 1.4rem; text-align: left; margin-bottom: 2rem; animation: fadeUp 0.4s 0.45s ease both; }
+.steps-label { font-family: 'Geist Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8C8070; margin-bottom: 0.8rem; }
+.step { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid #E0D8CE; font-size: 0.84rem; color: #1A1612; line-height: 1.5; }
+.step:last-child { border-bottom: none; }
+.step-num { font-family: 'Geist Mono', monospace; font-size: 0.65rem; font-weight: 600; background: #1A1612; color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.share-row { display: flex; gap: 0.6rem; justify-content: center; margin-bottom: 1.5rem; animation: fadeUp 0.4s 0.55s ease both; }
+.share-btn { display: flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.1rem; border-radius: 8px; font-size: 0.82rem; font-weight: 500; font-family: 'Geist', sans-serif; cursor: pointer; border: 1.5px solid #E0D8CE; background: white; color: #1A1612; transition: all 0.15s; text-decoration: none; }
+.share-btn:hover { border-color: #1A1612; }
+.back { font-size: 0.78rem; color: #8C8070; text-decoration: none; display: block; transition: color 0.15s; animation: fadeUp 0.4s 0.6s ease both; }
+.back:hover { color: #1A1612; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="card">
+  <span class="logo">approvel<span>.</span></span>
+  <span class="icon">🎉</span>
+  <div class="badge"><span class="badge-dot"></span>You're on the early access list</div>
+  <h1>You're <em>in</em>,<br>almost.</h1>
+  <p class="sub">We'll email you the moment early access opens.<br>Keep an eye on your inbox!</p>
+  <div class="steps">
+    <div class="steps-label">What happens next</div>
+    <div class="step"><div class="step-num">1</div><div>You'll get a personal invite link from us by email</div></div>
+    <div class="step"><div class="step-num">2</div><div>Click it to set up your free Approvel workspace</div></div>
+    <div class="step"><div class="step-num">3</div><div>Soon you'll be able to upload a design and share it with a client in under 2 minutes</div></div>
+  </div>
+  <div class="share-row">
+    <a class="share-btn" href="https://twitter.com/intent/tweet?text=Just+joined+the+early+access+waitlist+for+Approvel+%E2%80%94+async+client+approvals+for+designers.+No+more+email+chains.+approvel.io" target="_blank">𝕏 Share on X</a>
+    <button class="share-btn" onclick="copyLink(this)">⧉ Copy link</button>
+  </div>
+  <a class="back" href="index.html">← Back to approvel.io</a>
+</div>
+<script>
+var canvas = document.getElementById('confetti');
+var ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', function() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+var COLORS = ['#D4521A','#1A7A4A','#C27B00','#2563EB','#E8784A','#1A1612'];
+var pieces = [];
+function spawn(n) {
+  for (var i = 0; i < n; i++) {
+    pieces.push({ x: Math.random()*canvas.width, y: -10-Math.random()*80, w: 5+Math.random()*10, h: 3+Math.random()*7, color: COLORS[Math.floor(Math.random()*COLORS.length)], angle: Math.random()*Math.PI*2, spin: (Math.random()-0.5)*0.18, vx: (Math.random()-0.5)*3, vy: 2+Math.random()*4, gravity: 0.05+Math.random()*0.08, opacity: 1, circle: Math.random()>0.5 });
+  }
+}
+function draw(p) {
+  ctx.save(); ctx.globalAlpha=p.opacity; ctx.translate(p.x,p.y); ctx.rotate(p.angle); ctx.fillStyle=p.color;
+  if (p.circle) { ctx.beginPath(); ctx.arc(0,0,p.w/2,0,Math.PI*2); ctx.fill(); }
+  else { ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); }
+  ctx.restore();
+}
+function tick() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for (var i=pieces.length-1;i>=0;i--) {
+    var p=pieces[i]; p.x+=p.vx; p.y+=p.vy; p.vy+=p.gravity; p.angle+=p.spin;
+    if (p.y>canvas.height*0.75) p.opacity-=0.02;
+    if (p.opacity<=0) { pieces.splice(i,1); continue; }
+    draw(p);
+  }
+  if (pieces.length>0) requestAnimationFrame(tick);
+}
+spawn(120); setTimeout(function(){spawn(80);},400); setTimeout(function(){spawn(60);},900);
+tick();
+function copyLink(btn) {
+  navigator.clipboard.writeText('https://approvel.io').then(function() { btn.textContent='✓ Copied!'; setTimeout(function(){btn.textContent='⧉ Copy link';},2000); });
+}
+</script>
+</body>
+</html>
