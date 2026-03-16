@@ -1538,4 +1538,35 @@ const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
   navLinks.forEach(link => {
-    c
+    c    const section = document.querySelector(link.getAttribute('href'));
+    if (section) {
+      const top = section.offsetTop - 80;
+      const bottom = top + section.offsetHeight;
+      if (scrollY >= top && scrollY < bottom) link.classList.add('active');
+      else link.classList.remove('active');
+    }
+  });
+});
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+
+<!-- CELEBRATION OVERLAY -->
+<div id="celebrate-overlay">
+  <div class="celebrate-card">
+    <canvas id="celebrate-canvas"></canvas>
+    <span class="celebrate-icon">🎉</span>
+    <div class="celebrate-title">You're <em>in</em>!</div>
+    <p class="celebrate-sub">We'll email you when early access opens.<br>Taking you to your confirmation page…</p>
+    <div class="celebrate-bar"><div class="celebrate-bar-fill" id="celebrate-fill"></div></div>
+    <div class="celebrate-redirect-text">Redirecting in 2 seconds…</div>
+  </div>
+</div>
+
+</body>
+</html>
