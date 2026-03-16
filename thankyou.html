@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Approvel — You're on the list!</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #FAF7F2;
+  --ink: #1A1612;
+  --mid: #8C8070;
+  --rule: #E0D8CE;
+  --accent: #D4521A;
+  --green: #1A7A4A;
+  --green-bg: #E0F2E9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Geist', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── CONFETTI CANVAS ── */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── CARD ── */
+.card {
+  position: relative;
+  z-index: 2;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 3rem 3.5rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(26,22,18,0.08);
+  animation: cardIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Logo */
+.logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 2rem;
+  display: block;
+}
+
+.logo-dot { color: var(--accent); }
+
+/* Icon */
+.icon-wrap {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--green-bg);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.2rem;
+  animation: popIn 0.5s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.3) rotate(-15deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Number badge */
+.number-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--green-bg);
+  border: 1px solid rgba(26,122,74,0.2);
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--green);
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+  animation: fadeUp 0.4s 0.4s ease both;
+}
+
+.badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 0.8rem;
+  animation: fadeUp 0.4s 0.25s ease both;
+}
+
+h1 em { font-style: italic; color: var(--accent); }
+
+.sub {
+  font-size: 0.92rem;
+  color: var(--mid);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  animation: fadeUp 0.4s 0.35s ease both;
+}
+
+/* What's next list */
+.whats-next {
+  background: #FAF7F2;
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  text-align: left;
+  margin-bottom: 2rem;
+  animation: fadeUp 0.4s 0.45s ease both;
+}
+
+.whats-next-title {
+  font-size: 0.7rem;
+  font-family: 'Geist Mono', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 0.8rem;
+}
+
+.next-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.83rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.next-item:last-child { border-bottom: none; }
+
+.next-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  background: var(--ink);
+  color: white;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Share row */
+.share-row {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.4s 0.55s ease both;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: 'Geist', sans-serif;
+  cursor: pointer;
+  border: 1.5px solid var(--rule);
+  background: white;
+  color: var(--ink);
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.share-btn:hover { border-color: var(--ink); transform: translateY(-1px); }
+.share-btn.twitter { border-color: #1DA1F2; color: #1DA1F2; }
+.share-btn.twitter:hover { background: #EFF8FF; }
+
+.back-link {
+  font-size: 0.78rem;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.15s;
+  animation: fadeUp 0.4s 0.6s ease both;
+  display: block;
+}
+
+.back-link:hover { color: var(--ink); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="card">
+  <span class="logo">approvel<span class="logo-dot">.</span></span>
+
+  <div class="icon-wrap">🎉</div>
+
+  <div class="number-badge">
+    <span class="badge-dot"></span>
+    You're on the early access list
+  </div>
+
+  <h1>You're <em>in</em>,<br>almost.</h1>
+
+  <p class="sub">
+    We'll email you the moment early access opens.<br>
+    Usually within a few days — keep an eye out.
+  </p>
+
+  <div class="whats-next">
+    <div class="whats-next-title">What happens next</div>
+    <div class="next-item">
+      <div class="next-num">1</div>
+      <div>You'll get an email from us with your personal invite link</div>
+    </div>
+    <div class="next-item">
+      <div class="next-num">2</div>
+      <div>Click it to set up your free Approvel workspace</div>
+    </div>
+    <div class="next-item">
+      <div class="next-num">3</div>
+      <div>Soon you'll be able to upload a design and share it with a client in under 2 minutes</div>
+    </div>
+  </div>
+
+  <div class="share-row">
+    <a class="share-btn twitter" href="https://twitter.com/intent/tweet?text=Just+joined+the+early+access+waitlist+for+@approvel+%E2%80%94+async+client+approvals+for+designers.+No+more+email+chains.+%F0%9F%92%AA+approvel.io" target="_blank">
+      𝕏 Share on X
+    </a>
+    <button class="share-btn" onclick="copyLink()">⧉ Copy link</button>
+  </div>
+
+  <a class="back-link" href="index.html">← Back to approvel.io</a>
+</div>
+
+<script>
+// ── CONFETTI ────────────────────────────────────────────────
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+const COLORS = ['#D4521A','#1A7A4A','#1A1612','#C27B00','#2563EB','#E8784A','#2D7A4F'];
+const pieces = [];
+
+function randomBetween(a, b) { return a + Math.random() * (b - a); }
+
+function spawnPieces(n) {
+  for (let i = 0; i < n; i++) {
+    pieces.push({
+      x: randomBetween(0, canvas.width),
+      y: randomBetween(-80, -10),
+      w: randomBetween(6, 14),
+      h: randomBetween(4, 9),
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      angle: randomBetween(0, Math.PI * 2),
+      spin: randomBetween(-0.12, 0.12),
+      vx: randomBetween(-1.5, 1.5),
+      vy: randomBetween(2.5, 5.5),
+      gravity: randomBetween(0.06, 0.12),
+      opacity: 1,
+      shape: Math.random() > 0.5 ? 'rect' : 'circle'
+    });
+  }
+}
+
+function drawPiece(p) {
+  ctx.save();
+  ctx.globalAlpha = p.opacity;
+  ctx.translate(p.x, p.y);
+  ctx.rotate(p.angle);
+  ctx.fillStyle = p.color;
+  if (p.shape === 'circle') {
+    ctx.beginPath();
+    ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+    ctx.fill();
+  } else {
+    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+  }
+  ctx.restore();
+}
+
+function tick() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = pieces.length - 1; i >= 0; i--) {
+    const p = pieces[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += p.gravity;
+    p.angle += p.spin;
+    if (p.y > canvas.height * 0.7) p.opacity -= 0.02;
+    if (p.opacity <= 0) { pieces.splice(i, 1); continue; }
+    drawPiece(p);
+  }
+  if (pieces.length > 0) requestAnimationFrame(tick);
+}
+
+// Launch bursts
+spawnPieces(120);
+setTimeout(() => spawnPieces(80), 400);
+setTimeout(() => spawnPieces(60), 900);
+tick();
+
+// ── COPY LINK ───────────────────────────────────────────────
+function copyLink() {
+  navigator.clipboard.writeText('https://approvel.io').then(() => {
+    const btn = document.querySelector('.share-btn:not(.twitter)');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.innerHTML = '⧉ Copy link'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
